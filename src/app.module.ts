@@ -5,6 +5,10 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { User } from './user/entities/user.entity';
+import { DoctorModule } from './doctor/doctor.module';
+import { PatientModule } from './patient/patient.module';
+import { DoctorProfile } from './doctor/entities/doctor-profile.entity';
+import { PatientProfile } from './patient/entities/patient-profile.entity';
 
 @Module({
   imports: [
@@ -15,12 +19,18 @@ import { User } from './user/entities/user.entity';
       username: 'postgres',
       password: 'Nithin@2003',
       database: 'schedula',
-      entities: [User],
+      entities: [
+        User,
+        DoctorProfile,
+        PatientProfile
+      ],
       autoLoadEntities: true,
       synchronize: true,
     }),
     AuthModule,
     UserModule,
+    DoctorModule,
+    PatientModule,
   ],
   controllers: [AppController],
   providers: [AppService],
