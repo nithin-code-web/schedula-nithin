@@ -25,7 +25,7 @@ import { PatientProfile } from './patient/entities/patient-profile.entity';
         PatientProfile
       ],
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: false,
     }),
     AuthModule,
     UserModule,
