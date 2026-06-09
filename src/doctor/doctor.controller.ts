@@ -6,12 +6,14 @@ import {
   Param,
   Patch,
   Headers,    
-  ForbiddenException
+  ForbiddenException,
 } from '@nestjs/common';
 
 import { DoctorService } from './doctor.service';
 
 import { JwtService } from '@nestjs/jwt';
+
+import { Query } from '@nestjs/common';
 
 
 @Controller('doctor')
@@ -30,6 +32,21 @@ export class DoctorController {
     return this.doctorService.createProfile(body);
   }
 
+  @Get()
+findAll(
+  @Query('page') page?: number,
+  @Query('limit') limit?: number,
+  @Query('specialization') specialization?: string,
+  @Query('search') search?: string,
+) {
+  return this.doctorService.findAll(
+    Number(page) || 1,
+    Number(limit) || 10,
+    specialization,
+    search,
+  );
+}
+
   @Get('profile/:id')
   getProfile(
     @Headers('authorization') authHeader: string,
@@ -38,6 +55,13 @@ export class DoctorController {
 
     return this.doctorService.getProfile(id);
   }
+  
+  @Get(':id')
+getDoctorById(
+  @Param('id') id: number,
+) {
+  return this.doctorService.getProfile(id);
+}
 
   @Patch('profile/:id')
   updateProfile(
@@ -65,5 +89,7 @@ export class DoctorController {
 
   return payload;
  }
+
+ 
 
 }

@@ -65,4 +65,36 @@ export class DoctorService {
     where: { id },
   });
  }
+
+
+ async findAll(
+  page = 1,
+  limit = 10,
+  specialization?: string,
+  search?: string,
+) {
+  if (page < 1) page = 1;
+  if (limit < 1) limit = 10;
+  const query = this.doctorRepository.createQueryBuilder('doctor');
+
+  if (specialization) {
+    query.andWhere(
+      'LOWER(doctor.specialization) = LOWER(:specialization)',
+      { specialization },
+    );
+  }
+
+  if (search) {
+    query.andWhere(
+      'LOWER(doctor.fullName) LIKE LOWER(:search)',
+      { search: `%${search}%` },
+    );
+  }
+
+  const skip = (page - 1) * limit;
+
+  query.skip(skip).take(limit);
+
+  return query.getMany();
+}
 }       
